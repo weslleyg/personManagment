@@ -27,7 +27,7 @@ public class PersonService {
 
     Person savedPerson = this.personRepository.save(personToSave);
 
-    return createMessageResponseDTO(savedPerson.getId(), "Created person with ID ");
+    return this.createMessageResponseDTO(savedPerson.getId(), "Created person with ID ");
   }
 
   public List<PersonDTO> listAll() {
@@ -55,7 +55,7 @@ public class PersonService {
 
     Person updatedPerson = this.personRepository.save(personToUpdate);
 
-    return createMessageResponseDTO(updatedPerson.getId(), "Updated person with ID ");
+    return this.createMessageResponseDTO(updatedPerson.getId(), "Updated person with ID ");
   }
 
   private Person verifyIfExists(Long id) throws PersonNotFoundException {
