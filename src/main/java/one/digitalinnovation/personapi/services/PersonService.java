@@ -1,7 +1,6 @@
 package one.digitalinnovation.personapi.services;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class PersonService {
 
     Person savedPerson = this.personRepository.save(personToSave);
 
-    return MessageResponseDTO.builder().message("Created person with ID " + savedPerson.getId()).build();
+    return createMessageResponseDTO(savedPerson.getId(), "Created person with ID ");
   }
 
   public List<PersonDTO> listAll() {
@@ -38,8 +37,32 @@ public class PersonService {
   }
 
   public PersonDTO listById(Long id) throws PersonNotFoundException {
-    Optional<Person> person = this.personRepository.findById(id);
+    Person person = this.verifyIfExists(id);
 
-    return personMapper.toDTO(person.orElseThrow(() -> new PersonNotFoundException(id)));
+    return personMapper.toDTO(person);
+  }
+
+  public void delete(Long id) throws PersonNotFoundException {
+    this.verifyIfExists(id);
+
+    this.personRepository.deleteById(id);
+  }
+
+  public MessageResponseDTO update(Long id, PersonDTO personDTO) throws PersonNotFoundException {
+    this.verifyIfExists(id);
+
+    Person personToUpdate = personMapper.toModel(personDTO);
+
+    Person updatedPerson = this.personRepository.save(personToUpdate);
+
+    return createMessageResponseDTO(updatedPerson.getId(), "Updated person with ID ");
+  }
+
+  private Person verifyIfExists(Long id) throws PersonNotFoundException {
+    return this.personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException(id));
+  }
+
+  private MessageResponseDTO createMessageResponseDTO(Long id, String message) {
+    return MessageResponseDTO.builder().message(message + id).build();
   }
 }
