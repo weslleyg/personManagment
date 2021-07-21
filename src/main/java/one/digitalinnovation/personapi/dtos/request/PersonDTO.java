@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import one.digitalinnovation.personapi.entities.Phone;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Data
 @Builder
@@ -29,11 +29,12 @@ public class PersonDTO {
   private String lastName;
 
   @NotEmpty
+  @CPF
   private String cpf;
 
   private String birthDate;
 
   @Valid
   @NotEmpty
-  private List<Phone> phone;
+  private List<PhoneDTO> phones;
 }

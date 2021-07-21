@@ -1,5 +1,7 @@
 package one.digitalinnovation.personapi.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,20 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.AllArgsConstructor;
 import one.digitalinnovation.personapi.dtos.request.PersonDTO;
 import one.digitalinnovation.personapi.dtos.response.MessageResponseDTO;
 import one.digitalinnovation.personapi.services.PersonService;
 
 @RestController
 @RequestMapping("/api/v1/person")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PersonController {
 
   PersonService personService;
-
-  @Autowired
-  public PersonController(PersonService personService) {
-    this.personService = personService;
-  }
 
   @PostMapping
   @ResponseStatus(code = HttpStatus.CREATED)
@@ -33,7 +32,7 @@ public class PersonController {
   }
 
   @GetMapping
-  public String list() {
-    return "Hello world";
+  public List<PersonDTO> listAll() {
+    return this.personService.listAll();
   }
 }
