@@ -24,6 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -133,6 +135,27 @@ public class PersonServiceTest {
     when(this.personRepository.findById(invalidPersonId)).thenReturn(Optional.ofNullable(any(Person.class)));
 
     assertThrows(PersonNotFoundException.class, () -> this.personService.update(invalidPersonId, updatePersonRequest));
+  }
+
+  @Test
+  void testGivenPersonIdThenReturnSuccessOnDelete() throws PersonNotFoundException {
+    var deletePersonId = 1L;
+
+    Person expectedPersonToDelete = createFakeEntity();
+
+    when(this.personRepository.findById(deletePersonId)).thenReturn(Optional.of(expectedPersonToDelete));
+    this.personService.delete(deletePersonId);
+
+    verify(this.personRepository, times(1)).deleteById(deletePersonId);
+  }
+
+  @Test
+  void testGivenInvalidPersonIdThenThrowExceptionOnDelete() throws PersonNotFoundException {
+    var invalidPersonId = 1L;
+
+    when(this.personRepository.findById(invalidPersonId)).thenReturn(Optional.ofNullable(any(Person.class)));
+
+    assertThrows(PersonNotFoundException.class, () -> personService.delete(invalidPersonId));
   }
 
   private MessageResponseDTO createExpectedMessageResponse(Long id, String message) {
