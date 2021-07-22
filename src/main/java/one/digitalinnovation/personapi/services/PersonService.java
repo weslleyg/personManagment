@@ -39,7 +39,7 @@ public class PersonService {
   public PersonDTO listById(Long id) throws PersonNotFoundException {
     Person person = this.verifyIfExists(id);
 
-    return personMapper.toDTO(person);
+    return this.personMapper.toDTO(person);
   }
 
   public void delete(Long id) throws PersonNotFoundException {

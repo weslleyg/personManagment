@@ -14,8 +14,8 @@ public class PersonUtils {
   public static final LocalDate BIRTH_DATE = LocalDate.of(2000, 9, 17);
 
   public static PersonDTO createFakeDTO() {
-    return PersonDTO.builder().firstName(FIRST_NAME).lastName(LAST_NAME).cpf(CPF_NUMBER).birthDate("04-04-2013")
-        .phones(Collections.singletonList(PhoneUtils.createFakeDTO())).build();
+    return PersonDTO.builder().id(PERSON_ID).firstName(FIRST_NAME).lastName(LAST_NAME).cpf(CPF_NUMBER)
+        .birthDate("04-04-2013").phones(Collections.singletonList(PhoneUtils.createFakeDTO())).build();
   }
 
   public static Person createFakeEntity() {
