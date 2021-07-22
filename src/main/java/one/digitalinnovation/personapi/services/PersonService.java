@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import one.digitalinnovation.personapi.dtos.mappers.PersonMapper;
 import one.digitalinnovation.personapi.dtos.request.PersonDTO;
 import one.digitalinnovation.personapi.dtos.response.MessageResponseDTO;
 import one.digitalinnovation.personapi.entities.Person;
 import one.digitalinnovation.personapi.exceptions.PersonNotFoundException;
-import one.digitalinnovation.personapi.mappers.PersonMapper;
 import one.digitalinnovation.personapi.repositories.PersonRepository;
 
 @Service
@@ -20,7 +20,7 @@ public class PersonService {
 
   private PersonRepository personRepository;
 
-  private final PersonMapper personMapper = PersonMapper.INSTANCE;
+  private PersonMapper personMapper;
 
   public MessageResponseDTO save(PersonDTO personDTO) {
     Person personToSave = personMapper.toModel(personDTO);
