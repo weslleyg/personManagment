@@ -23,6 +23,12 @@ Após executar o comando acima, basta apenas abrir o seguinte endereço e visual
 http://localhost:8081/api/v1/person
 ```
 
+Acesse também em:
+
+```
+https://personmanagment.herokuapp.com/api/v1/person
+```
+
 São necessários os seguintes pré-requisitos para a execução do projeto desenvolvido durante a aula:
 
 - Java 11 ou versões superiores.
