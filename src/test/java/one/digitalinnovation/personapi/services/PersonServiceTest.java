@@ -94,6 +94,47 @@ public class PersonServiceTest {
     assertThrows(PersonNotFoundException.class, () -> this.personService.listById(invalidPersonId));
   }
 
+  @Test
+  void testGivenValidPersonIdAndUpdateThenReturnSuccessOnUpdate() throws PersonNotFoundException {
+    var updatedPersonId = 2L;
+
+    PersonDTO updatePersonDTORequest = createFakeDTO();
+    updatePersonDTORequest.setId(updatedPersonId);
+    updatePersonDTORequest.setLastName("Pereira");
+
+    Person expectedPersonToUpdate = createFakeEntity();
+    expectedPersonToUpdate.setId(updatedPersonId);
+
+    Person expectedPersonUpdated = createFakeEntity();
+    expectedPersonUpdated.setId(updatedPersonId);
+    expectedPersonToUpdate.setLastName(updatePersonDTORequest.getLastName());
+
+    when(this.personRepository.findById(updatedPersonId)).thenReturn(Optional.of(expectedPersonUpdated));
+    when(this.personMapper.toModel(updatePersonDTORequest)).thenReturn(expectedPersonUpdated);
+    when(this.personRepository.save(any(Person.class))).thenReturn(expectedPersonUpdated);
+
+    MessageResponseDTO successMessage = this.personService.update(updatedPersonId, updatePersonDTORequest);
+
+    MessageResponseDTO expectedSuccessMessage = createExpectedMessageResponse(expectedPersonUpdated.getId(),
+        "Updated person with ID ");
+
+    assertEquals(expectedSuccessMessage, successMessage);
+
+  }
+
+  @Test
+  void testGivenInvalidPersonIdAndUpdateThenThrowExceptionOnUpdate() throws PersonNotFoundException {
+    var invalidPersonId = 1L;
+
+    PersonDTO updatePersonRequest = createFakeDTO();
+    updatePersonRequest.setId(invalidPersonId);
+    updatePersonRequest.setLastName("Tester");
+
+    when(this.personRepository.findById(invalidPersonId)).thenReturn(Optional.ofNullable(any(Person.class)));
+
+    assertThrows(PersonNotFoundException.class, () -> this.personService.update(invalidPersonId, updatePersonRequest));
+  }
+
   private MessageResponseDTO createExpectedMessageResponse(Long id, String message) {
     return MessageResponseDTO.builder().message(message + id).build();
   }
